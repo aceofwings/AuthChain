@@ -10,10 +10,10 @@ A blockchain implementation for authorizing uses
 ## Install GO
 
 ### Getting GO
-`` curl https://storage.googleapis.com/golang/go1.9.1.linux-amd64.tar.gz``
+`curl https://storage.googleapis.com/golang/go1.9.1.linux-amd64.tar.gz`
 `sudo tar -xvf go1.9.1.linux-amd64.tar.gz`
 `sudo mv go /usr/local`
-` mkdir ~/gocode`
+`mkdir ~/gocode`
 
 ### Set GOPATH and path for go installations to bash_profile
 
