@@ -5,7 +5,7 @@ class Application(BaseApplication):
 
     def start(self):
         self.server = ABCIServer(app=self)
-        self.server.start()
+        self.server.run()
 
     def info(self):
         """ Called by ABCI when the app first starts. A stateful application
