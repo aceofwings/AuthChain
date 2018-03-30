@@ -58,30 +58,6 @@ def encode(number):
             break
     return buf
 
-
-
-def uvarint_size(i):
-    if i == 0:
-        return 0
-    for j in [1,2,3,4,5,6,7,8]:
-        if i < 1 << j * 8:
-            return j
-    return 8
-
-
-def write_varint(i):
-    negate = False
-    if i < 0:
-        negate = True
-        i = -i
-    size = uvarint_size(i)
-    if size == 0:
-        return writer.write(0)
-    big_end = int_to_big_endian(i)
-    if negate:
-        size += 0xF0
-    print(bytes([size]))
-
 def ZigZagEncode(value):
   """ZigZag Transform:  Encodes signed integers so that they can be
   effectively used with varint encoding.  See wire_format.h for
@@ -101,4 +77,5 @@ def ZigZagDecode(value):
 
 
 if __name__ == "__main__":
+    result = decode_stream(BytesIO(bytes([0x14,0x02, 0x01])))
     print(ZigZagDecode(result))
