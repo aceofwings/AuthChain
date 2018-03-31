@@ -7,7 +7,9 @@ install_requires = [
     'flask-restful~=0.3.0',
     'requests~=2.9',
     'jsonschema~=2.5.1',
-    'abci~=0.3.0',
+    "protobuf>=3.2.0",
+    "gevent>=1.2.1",
+    "colorlog>=3.0.1",
 ]
 
 setup(
