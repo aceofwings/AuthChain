@@ -1,7 +1,7 @@
 """
 Low level protobuf message used by the ABCI connection
 """
-from .types_pb2 import *
+from authchain.protobuf.types1_pb2 import *
 
 def to_request_echo(msg):
     r = Request()

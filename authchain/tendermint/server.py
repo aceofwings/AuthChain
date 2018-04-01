@@ -13,11 +13,11 @@ import gevent, signal
 from gevent.event import Event
 from gevent.server import StreamServer
 
-from .wire import *
-from .messages import *
-from .types_pb2 import Request
-from .utils import get_logger
-from .application import BaseApplication
+from authchain.protobuf.wire import *
+from authchain.protobuf.messages import *
+from authchain.protobuf.types1_pb2 import Request
+from authchain.protobuf.utils import get_logger
+from authchain.tendermint.application import BaseApplication
 
 log = get_logger()
 

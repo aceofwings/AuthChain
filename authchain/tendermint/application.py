@@ -1,5 +1,5 @@
 from authchain.protobuf.messages import *
-from authchain.protobuf.types_pb2 import *
+from authchain.protobuf.types1_pb2 import *
 from authchain.protobuf.utils import str_to_bytes
 
 OK = 0

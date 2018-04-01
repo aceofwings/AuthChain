@@ -1,5 +1,6 @@
-from abci import BaseApplication, Result , ABCIServer
 
+from authchain.tendermint.server import ABCIServer
+from authchain.tendermint.application import BaseApplication, Result
 
 class Application(BaseApplication):
 
