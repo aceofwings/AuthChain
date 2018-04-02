@@ -65,7 +65,7 @@ class ProtocolHandler(object):
 
     def commit(self, req):
         result = self.app.commit()
-        response = to_response_commit(result.code, result.data, result.log)
+        response = to_response_commit(result)
         return write_message(response)
 
     def begin_block(self, req):
@@ -122,7 +122,7 @@ class ABCIServer(object):
     # If an error happens in 1 it still leaves the others open which
     # means you don't have all the connections available to TM
     def __handle_connection(self, socket, address):
-        log.debug(' ... connection from tendermint: {}:{} ...'.format(address[0], address[1]))
+        log.info(' ... connection from tendermint: {}:{} ...'.format(address[0], address[1]))
 
         data = BytesIO()
         carry_forward = b''
@@ -132,28 +132,27 @@ class ABCIServer(object):
             msg_length = len(carry_forward) + len(inbound)
             data.write(carry_forward)
             data.write(inbound)
-
             data.seek(0)
             carry_forward = b''
             if not data or msg_length == 0: return
 
-            try:
-                while data.tell() < msg_length:
-                    req, err  = read_message(data, Request)
-                    # TODO: an err should be 1 ...
-                    # this is actually confusing see read_message
-                    if err == 0: return
-                    if err == -1:
-                        data.seek(req)
-                        carry_forward = data.read(1024)
-                        break
 
-                    req_type = req.WhichOneof("value")
+            while data.tell() < msg_length:
+                req, err  = read_message(data, Request)
+                # TODO: an err should be 1 ...
+                # this is actually confusing see read_message
+                if err == 0: return
+                if err == -1:
+                    data.seek(req)
+                    carry_forward = data.read(1024)
+                    break
 
-                    response = self.protocol.process(req_type, req)
-                    socket.sendall(response)
-            except:
-                log.error(" Server Error: {}".format(sys.exc_info()[1]))
+                req_type = req.WhichOneof("value")
+
+                response = self.protocol.process(req_type, req)
+                socket.sendall(response)
+
+
 
             data.seek(0)
             data.truncate()

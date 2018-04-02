@@ -69,7 +69,7 @@ def to_response_flush():
     r.flush.CopyFrom(ResponseFlush())
     return r
 
-def to_response_deliver_tx(code, data, log):
+def to_response_deliver_tx(data):
     r = Response()
     r.deliver_tx.code = code
     r.deliver_tx.data = data
@@ -88,11 +88,9 @@ def to_response_query(resQuery):
     r.query.CopyFrom(resQuery)
     return r
 
-def to_response_commit(code, data, log):
+def to_response_commit(data):
     r = Response()
-    r.commit.code =code
     r.commit.data = data
-    r.commit.log =log
     return r
 
 def to_response_set_option(log):
@@ -113,4 +111,4 @@ def to_response_end_block(res):
 def to_response_init_chain():
     r = Response()
     r.init_chain.CopyFrom(ResponseInitChain())
-    return rx
+    return r

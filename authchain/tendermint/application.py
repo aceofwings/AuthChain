@@ -46,7 +46,7 @@ class BaseApplication(object):
         """
         r = ResponseInfo()
         r.last_block_height = 0
-        r.last_block_app_hash = b''
+        r.last_block_app_hash = b'0x1'
         return r
 
     def set_option(self, k, v):
@@ -80,4 +80,4 @@ class BaseApplication(object):
         """Called to get the result of processing transactions.  If this is a
         stateful application using a Merkle Tree, this method should return
         the root hash of the Merkle Tree in the Result data field"""
-        return Result.ok(data=b'')
+        return b'1'
