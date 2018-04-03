@@ -4,7 +4,7 @@ to support what's needed for ABCI communication with protobuf
 """
 from io import BytesIO
 from authchain.protobuf.utils import int_to_big_endian, big_endian_to_int
-from authchain.protobuf.varint import  decode_stream, ZigZagDecode , encode
+from authchain.protobuf.varint import  decode_stream, encode
 
 def uvarint_size(i):
     if i == 0:
@@ -20,7 +20,7 @@ def write_svarint(i, writer):
 
 def read_varint(reader):
     r = decode_stream(reader)
-    return ZigZagDecode(r)
+    return r
 
 def write_byte_slice(bz, buffer):
     write_svarint(len(bz), buffer)

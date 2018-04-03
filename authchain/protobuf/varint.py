@@ -25,7 +25,7 @@ def decode_stream(stream):
         if not (i & 0x80):
             break
 
-    return result
+    return ZigZagDecode(result)
 
 def decode_bytes(bytes):
     """Read a varint from `stream`"""

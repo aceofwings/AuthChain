@@ -148,7 +148,7 @@ class ABCIServer(object):
                     break
 
                 req_type = req.WhichOneof("value")
-
+                print(req_type)
                 response = self.protocol.process(req_type, req)
                 socket.sendall(response)
 

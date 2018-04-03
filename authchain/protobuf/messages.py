@@ -69,7 +69,7 @@ def to_response_flush():
     r.flush.CopyFrom(ResponseFlush())
     return r
 
-def to_response_deliver_tx(data):
+def to_response_deliver_tx(code,data, log):
     r = Response()
     r.deliver_tx.code = code
     r.deliver_tx.data = data
@@ -80,7 +80,7 @@ def to_response_check_tx(code, data, log):
     r = Response()
     r.check_tx.code = code
     r.check_tx.data = data
-    r.check_tx.logd = log
+    r.check_tx.log = log
     return r
 
 def to_response_query(resQuery):
