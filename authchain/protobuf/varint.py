@@ -93,4 +93,3 @@ def ZigZagDecode(value):
 
 if __name__ == "__main__":
     result = decode_stream(BytesIO(bytes([0x14,0x02, 0x01])))
-    print(ZigZagDecode(result))

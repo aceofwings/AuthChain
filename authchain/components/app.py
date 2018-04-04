@@ -26,7 +26,6 @@ class Application(BaseApplication):
     def __valid_input(self, tx):
         """Check to see the given input is the next sequence in the count"""
         value = decode_bytes(tx)
-        print(value)
         return value == (self.txCount + 1)
 
 
@@ -37,18 +36,17 @@ class Application(BaseApplication):
 
     def deliver_tx(self,tx):
         """Called to calculate state on a given block during the consensus process"""
-        if not self.__valid_input(tx):
-            return Result.error(log='bad count')
         self.txCount += 1
-        return Result.ok()
+        print(tx)
+        return Result.ok(log='transaction passed',data=bytes([0x4]))
 
 
     def check_tx(self,tx):
         """Use to validate incoming transactions.  If Result.ok is returned,
         the Tx will be added to Tendermint's mempool"""
 
-        print("transaction")
-        return Result.ok(log='thumbs up')
+        print(" checking transaction")
+        return Result.ok(log='thumbs up',data=bytes([0x4]))
 
     def end_block(self,height):
         """Called at the end of processing. If this is a stateful application
