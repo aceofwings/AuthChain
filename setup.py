@@ -10,6 +10,9 @@ install_requires = [
     "protobuf>=3.2.0",
     "gevent>=1.2.1",
     "colorlog>=3.0.1",
+    'PyNaCl~=1.1.0',
+    'base58~=0.2.2'
+
 ]
 
 setup(
