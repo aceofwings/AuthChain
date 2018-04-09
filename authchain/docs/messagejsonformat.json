@@ -1,0 +1,43 @@
+# Registering Service #REGISTER
+# The first thing is to resgister a service or an item to be accesed. This acts as an account who can sign on behalf of the service
+{
+  "id" : "Sha 256 hash of the message contents",
+  "type" : "REGISTER",
+  "data" : {
+      "Owners" : ["Base 58 encoded keys "],  # THese are people who can add keys or add services or swap keys
+      "Authorities" : ["Based 58 encoded keys"], # people who can authorize others or revoke priveledges
+      "services" : ["Public keys of services"],
+      "signs" : []
+  }
+}
+
+#What needs to be checked
+Make sure the public keys of services aren't already registered within the block chain under certain .
+
+
+#Granting Access #GRANT
+{
+  "id" : "Sha 256 hash of the message contents",
+  "type" : "GRANT",
+  "data" : {
+    "service" : "public key Encoded58 of service",
+    "signs" :{ "condition_type" :" base 58 encoded" ,: "condition_uri"},
+    "granted by " : "public_key" #these are the users who
+  }
+
+
+}
+
+
+#Removing Access #DENY
+{
+    "id" : "Sha 256 hash of the message contents",
+    "type" : "DENY",
+    "data" : {
+      "service" : "public key Encoded 58 of service",
+      "signs" : { condition_type: "base 58 encoded 25918", : "condition_uri"},
+      "granted by " "publicy key"
+    }
+
+
+}
