@@ -3,27 +3,40 @@ import logging
 import json
 import base64
 
+"""
+Modes of transaction
 
+broadcast_tx_async
+
+"""
 URI = "http://localhost:46657"
 
 class Transmitter(object):
 
+
+    MODE_LIST = ('broadcast_tx_async',
+                 'broadcast_tx_sync',
+                 'broadcast_tx_commit')
+
     def __init__():
         pass
 
-    def postCreateTransaction(self,transaction):
+    def postCreateTransaction(self,transaction,mode):
+        """
+
+        """
         payload = {
-            'method': "CREATE",
+            'mode': "CREATE",
             'jsonrpc': '2.0',
             'params': [Transaction.encode(transaction.to_dict())],
             'id': str(uuid4())
         }
         requests.post(url, json=payload)
 
-class Transaction(object):
 
-    inputs = []
-    outputs = []
+class Message(object):
+
+    message = None
 
     @classmethod
     def encode(self,tx):
