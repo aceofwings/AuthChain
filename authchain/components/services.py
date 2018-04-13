@@ -1,5 +1,7 @@
 
 from cryptoconditions import Ed25519Sha256,ThresholdSha256
+import sha3
+import json
 import base58
 
 
@@ -18,7 +20,7 @@ class MSGTYPE(object):
     GRANT = "GRANT"
     DENY = "DENY"
 
-def generate_service(service_key, owner_keys, auth_keys = [], owners_authroize = True):
+def generate_service(service_key, owner_keys, auth_keys = [], owners_authorize = True):
     """
     create a an unsigned service msg
     Args:
@@ -32,7 +34,7 @@ def generate_service(service_key, owner_keys, auth_keys = [], owners_authroize =
     message = MessageShell.messageForType(MSGTYPE.REGISTER)
     message['data']['service'] = service_key
     message['data']['owners'] = owner_keys
-    if owners_authroize:
+    if owners_authorize:
         message['data']['authorities'] = owner_keys + auth_keys
     else:
         message['data']['authorities'] = auth_keys
@@ -42,18 +44,19 @@ def generate_service(service_key, owner_keys, auth_keys = [], owners_authroize =
     if len(owner_keys) != 1:
         condition = ThresholdSha256(threshold=len(owner_keys))
         for key in owner_keys:
-            condition.add_subcondition(Ed25519Sha256(public_key= base58.b58decode(key)).condition)
+            condition.add_subfulfillment(Ed25519Sha256(public_key= base58.b58decode(key)))
     else:
         condition = Ed25519Sha256(public_key= base58.b58decode(owner_keys[0]))
 
     message['data']['condition']  = condition.to_dict()
     message['data']['condition_uri'] = condition.condition_uri
 
+
     return message
 
 
 
-def sign_service(message,owner_priv_keys,fullfillments):
+def sign_service(message,owner_priv_keys):
     """
     finalize the generated service message by adding condition attributes
 
@@ -67,6 +70,30 @@ def sign_service(message,owner_priv_keys,fullfillments):
         Invalid public private key pairing
         Insufficient private keys
     """
+    fulfillment = None
+
+    message = json.dumps(
+        message,
+        sort_keys=True,
+        separators=(',', ':'),
+        ensure_ascii=False,
+    )
+
+    encoded_message = sha3.sha3_256(message.encode())
+
+    if len(owner_priv_keys) == 1:
+        fulfillment =  ThresholdSha256(threshold=len(owner_priv_keys))
+        for key in owner_priv_keys:
+            f = Ed25519Sha256()
+            f.sign(message.encode(), base58.b58decode(key))
+            fulfillment.add_subfulfillment(f)
+    else:
+        fulfillment = Ed25519Sha256()
+        fulfillment.sign(message.encode(),base58.b58decode(owner_priv_keys[0]))
+
+
+
+
 
 
 
