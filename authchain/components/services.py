@@ -1,5 +1,6 @@
 
 from cryptoconditions import Ed25519Sha256,ThresholdSha256
+from authchain.control.transactions import Transaction
 import sha3
 import json
 import base58
@@ -72,25 +73,44 @@ def sign_service(message,owner_priv_keys):
     """
     fulfillment = None
 
-    message = json.dumps(
+    jsonMessage = json.dumps(
         message,
         sort_keys=True,
         separators=(',', ':'),
         ensure_ascii=False,
     )
 
-    encoded_message = sha3.sha3_256(message.encode())
+    encoded_message = sha3.sha3_256(jsonMessage.encode())
 
     if len(owner_priv_keys) == 1:
-        fulfillment =  ThresholdSha256(threshold=len(owner_priv_keys))
+        fulfillment = ThresholdSha256(threshold=len(owner_priv_keys))
         for key in owner_priv_keys:
             f = Ed25519Sha256()
-            f.sign(message.encode(), base58.b58decode(key))
+            f.sign(jsonMessage.encode(), base58.b58decode(key))
             fulfillment.add_subfulfillment(f)
     else:
         fulfillment = Ed25519Sha256()
-        fulfillment.sign(message.encode(),base58.b58decode(owner_priv_keys[0]))
+        fulfillment.sign(jsonMessage.encode(),base58.b58decode(owner_priv_keys[0]))
 
+    message['data']['fullfillment_uri'] = fulfillment
+
+    return message
+
+
+
+def verifyService(message):
+    """
+    Args:
+        message - Dictionary(hash) representing the serivce message to verify \
+
+    returns:
+        Boolean - True if the messages is correct and meets conditions otherwise false
+    """
+    transaction = Transaction.createTransactionFromDict(message)
+
+    return False
+
+    return True
 
 
 

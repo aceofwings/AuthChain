@@ -24,7 +24,7 @@ class TestServices(unittest.TestCase):
         message = services.generate_service(self.service.public_key, [self.alice.public_key,self.bob.public_key])
 
     def test_generateSignedTx(self):
-        services.sign_service(self.singleMessage, [self.alice.private_key])
+        signedmessage = services.sign_service(self.singleMessage, [self.alice.private_key])
 
     def test_generateMultiSignedTx(self):
-        services.sign_service(self.multimessage, [self.alice.private_key, self.bob.private_key])
+        signedmessage = services.sign_service(self.multimessage, [self.alice.private_key, self.bob.private_key])

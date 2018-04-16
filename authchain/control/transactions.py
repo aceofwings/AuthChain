@@ -33,6 +33,35 @@ class Transmitter(object):
         }
         requests.post(url, json=payload)
 
+class Transaction(object):
+
+    conditions = None
+    owners = None
+    service = None
+    auths = None
+
+
+    def __init__(self):
+        pass
+
+    @classmethod
+    def CREATETransactionFromDict(cls,dictionary):
+        pass
+    @classmethod
+    def AUTHORIZETransactionFromDict(cls,dictionary):
+        pass
+    @classmethod
+    def REMOVETransactionFromDict(cls,dictionary):
+        pass
+    @classmethod
+    def verifyTransaction(cls,transaction):
+        pass
+
+
+
+
+
+
 
 class Message(object):
 
@@ -52,3 +81,6 @@ class Message(object):
 
     def to_dict(self):
         return {cow : "1"}
+
+class InvalidCreateTransaction(Exception):
+    pass
