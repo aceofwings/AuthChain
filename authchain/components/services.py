@@ -82,8 +82,11 @@ def sign_service(message,owner_priv_keys):
 
     encoded_message = sha3.sha3_256(jsonMessage.encode())
 
+    message['data']['fulfillment'] = {}
+
     if len(owner_priv_keys) == 1:
         fulfillment = ThresholdSha256(threshold=len(owner_priv_keys))
+        message['data']['fulfillment']['type'] = ThresholdSha256.TYPE_NAME
         for key in owner_priv_keys:
             f = Ed25519Sha256()
             f.sign(jsonMessage.encode(), base58.b58decode(key))
@@ -91,8 +94,9 @@ def sign_service(message,owner_priv_keys):
     else:
         fulfillment = Ed25519Sha256()
         fulfillment.sign(jsonMessage.encode(),base58.b58decode(owner_priv_keys[0]))
+        message['data']['fulfillment']['type'] = Ed25519Sha256.TYPE_NAME
 
-    message['data']['fullfillment_uri'] = fulfillment
+    message['data']['fulfillment_uri'] = fulfillment
 
     return message
 

@@ -3,6 +3,8 @@ import logging
 import json
 import base64
 
+from cryptoconditions import Ed25519Sha256, ThresholdSha256
+
 """
 Modes of transaction
 
@@ -35,7 +37,7 @@ class Transmitter(object):
 
 class Transaction(object):
 
-    conditions = None
+    condition= None
     owners = None
     service = None
     auths = None
@@ -47,6 +49,7 @@ class Transaction(object):
     @classmethod
     def CREATETransactionFromDict(cls,dictionary):
         pass
+
     @classmethod
     def AUTHORIZETransactionFromDict(cls,dictionary):
         pass
