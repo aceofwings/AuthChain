@@ -3,7 +3,7 @@ import logging
 import json
 import base64
 
-from cryptoconditions import Ed25519Sha256, ThresholdSha256
+from cryptoconditions import Ed25519Sha256, ThresholdSha256, Fulfillment
 
 """
 Modes of transaction
@@ -38,6 +38,7 @@ class Transmitter(object):
 class Transaction(object):
 
     condition= None
+    fullfillment = None
     owners = None
     service = None
     auths = None
@@ -48,7 +49,21 @@ class Transaction(object):
 
     @classmethod
     def CREATETransactionFromDict(cls,dictionary):
-        pass
+        transaction = Transaction()
+        try:
+            if dictionary["data"]["condition"]["type"] == Ed25519Sha256.TYPE_NAME:
+                transaction.condition = dictionary['data']["condition_uri"]
+            elif dictionary["data"]["condition"]["type"] == ThresholdSha256.TYPE_NAME:
+                transaction.condition = dictionary['data']["condition_uri"]
+            else:
+                raise InvalidCreateTransaction()
+
+            transaction.fullfillment = Fulfillment.from_uri(dictionary["data"]["fulfillment_uri"])
+
+        except:
+            raise InvalidCreateTransaction()
+        return transaction
+
 
     @classmethod
     def AUTHORIZETransactionFromDict(cls,dictionary):

@@ -96,7 +96,7 @@ def sign_service(message,owner_priv_keys):
         fulfillment.sign(jsonMessage.encode(),base58.b58decode(owner_priv_keys[0]))
         message['data']['fulfillment']['type'] = Ed25519Sha256.TYPE_NAME
 
-    message['data']['fulfillment_uri'] = fulfillment
+    message['data']['fulfillment_uri'] = fulfillment.serialize_uri()
 
     return message
 
