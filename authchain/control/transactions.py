@@ -2,6 +2,7 @@ import requests
 import logging
 import json
 import base64
+from copy import deepcopy
 
 from cryptoconditions import Ed25519Sha256, ThresholdSha256, Fulfillment
 
@@ -38,10 +39,11 @@ class Transmitter(object):
 class Transaction(object):
 
     condition= None
-    fullfillment = None
+    fulfillment = None
     owners = None
     service = None
     auths = None
+    id = None
 
 
     def __init__(self):
@@ -58,8 +60,8 @@ class Transaction(object):
             else:
                 raise InvalidCreateTransaction()
 
-            transaction.fullfillment = Fulfillment.from_uri(dictionary["data"]["fulfillment_uri"])
-
+            transaction.fulfillment = Fulfillment.from_uri(dictionary["data"]["fulfillment"]["fulfillment_uri"])
+            transaction.id = dictionary["id"]
         except:
             raise InvalidCreateTransaction()
         return transaction
@@ -70,7 +72,10 @@ class Transaction(object):
         pass
     @classmethod
     def REMOVETransactionFromDict(cls,dictionary):
-        pass
+        tx = deepcopy(dictionary)
+        tx['data']["fulfillment"] = None
+        return tx
+
     @classmethod
     def verifyTransaction(cls,transaction):
         pass
